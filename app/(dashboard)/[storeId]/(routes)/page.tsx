@@ -6,6 +6,10 @@ import { Separator} from "@/components/ui/separator";
 import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
 import {formatter} from "@/lib/utils";
 import {getTotalRevenue} from "@/actions/get-total-revenue";
+import {getSalesCount} from "@/actions/get-sales-count";
+import {getStockCount} from "@/actions/get-stock-count";
+import {Overview} from "@/components/overview";
+import {getGraph} from "@/actions/get-graph";
 
 
 interface DashboardPageProps{
@@ -15,8 +19,9 @@ interface DashboardPageProps{
 const DashboardPage:React.FC<DashboardPageProps> =async ({params}) =>{
 
    const totalRevenue = await getTotalRevenue(params.storeId)
-   const salesCount = () =>{};
-   const stockCount = () =>{}
+   const salesCount = await getSalesCount(params.storeId)
+   const stockCount =await getStockCount(params.storeId)
+   const graphRevenue = await getGraph(params.storeId)
 
 
    return (
@@ -42,7 +47,7 @@ const DashboardPage:React.FC<DashboardPageProps> =async ({params}) =>{
                      <CreditCard className="h-4 w-4 text-muted-foreground" />
                   </CardHeader>
                   <CardContent>
-                     <div className="text-2xl font-bold">+{}</div>
+                     <div className="text-2xl font-bold">+{salesCount}</div>
                   </CardContent>
                </Card>
                <Card>
@@ -51,7 +56,7 @@ const DashboardPage:React.FC<DashboardPageProps> =async ({params}) =>{
                      <Package className="h-4 w-4 text-muted-foreground" />
                   </CardHeader>
                   <CardContent>
-                     <div className="text-2xl font-bold">{}</div>
+                     <div className="text-2xl font-bold">{stockCount}</div>
                   </CardContent>
                </Card>
             </div>
@@ -60,7 +65,7 @@ const DashboardPage:React.FC<DashboardPageProps> =async ({params}) =>{
                   <CardTitle>Overview</CardTitle>
                </CardHeader>
                <CardContent className="pl-2">
-                  {/*<Overview data={graphRevenue} />*/}
+                  <Overview data={graphRevenue}/>
                </CardContent>
             </Card>
          </div>
